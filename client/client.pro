@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        apiservice.cpp \
         jsonstructs.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        apiservice.h \
         jsonstructs.h \
         mainwindow.h
 
