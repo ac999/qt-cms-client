@@ -26,13 +26,13 @@ CONFIG += c++11
 
 SOURCES += \
         apiservice.cpp \
-        jsonstructs.cpp \
+        haveibeenpwned.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
         apiservice.h \
-        jsonstructs.h \
+        haveibeenpwned.h \
         mainwindow.h
 
 FORMS += \
