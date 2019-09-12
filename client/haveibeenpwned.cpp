@@ -53,6 +53,13 @@ bool haveibeenpwned::getStatusPassword() {
     return this->statusPassword ;
 };
 
+QByteArray haveibeenpwned::sendRequest(
+        QString url
+      , QString ApiKey
+        ) {
+
+};
+
 QString SHA1(QString password) {
     QCryptographicHash* hash = new QCryptographicHash(QCryptographicHash::Sha1) ;
     hash->addData(password.toUtf8()) ;

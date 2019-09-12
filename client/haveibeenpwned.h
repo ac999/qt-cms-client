@@ -32,12 +32,17 @@ public:
 
     QString getUser() ;
     QString getPassword() ;
-    QString getPasswordHash() ;
 
     bool getStatusUser() ;
     bool getStatusPassword() ;
+
+    QByteArray sendRequest(
+              QString url
+            , QString ApiKey
+            ) ;
 };
 
 QString SHA1(QString password) ;
+
 
 #endif // HAVEIBEENPWNED_H
