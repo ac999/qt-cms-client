@@ -32,7 +32,6 @@ public:
 
     QString getUser() ;
     QString getPassword() ;
-    QString getPasswordHash() ;
 
     bool getStatusUser() ;
     bool getStatusPassword() ;

@@ -4,7 +4,9 @@ haveibeenpwned::haveibeenpwned()
 {
     this->user = "" ;
     this->password = "" ;
-    this->response = "" ;
+    this->passwordHash = "" ;
+    this->statusUser = false ;
+    this->statusPassword = false;
 };
 
 haveibeenpwned::haveibeenpwned(
@@ -13,6 +15,9 @@ haveibeenpwned::haveibeenpwned(
         ) {
     this->user = user ;
     this->password = password ;
+    this->passwordHash = SHA1(password) ;
+    this->statusUser = false ;
+    this->statusPassword = false ;
 };
 
 bool haveibeenpwned::checkUser() {
@@ -29,6 +34,7 @@ void haveibeenpwned::setUser(QString user) {
 
 void haveibeenpwned::setPassword(QString password) {
     this->password = password ;
+    this->passwordHash = SHA1(password) ;
 };
 
 QString haveibeenpwned::getUser() {
@@ -39,6 +45,16 @@ QString haveibeenpwned::getPassword() {
     return this->password ;
 };
 
-QString haveibeenpwned::getResponse() {
-    return this->response ;
+bool haveibeenpwned::getStatusUser() {
+    return this->statusUser ;
+};
+
+bool haveibeenpwned::getStatusPassword() {
+    return this->statusPassword ;
+};
+
+QString SHA1(QString password) {
+    QCryptographicHash* hash = new QCryptographicHash(QCryptographicHash::Sha1) ;
+    hash->addData(password.toUtf8()) ;
+    return QString::fromUtf8(hash->result() ) ;
 };
