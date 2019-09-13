@@ -1,67 +1,70 @@
 #include "haveibeenpwned.h"
 
-haveibeenpwned::haveibeenpwned()
-{
-    this->user = "" ;
-    this->password = "" ;
-    this->passwordHash = "" ;
-    this->statusUser = false ;
-    this->statusPassword = false;
+bool haveibeenpwned::getStatus() {
+    return this->status ;
 };
 
-haveibeenpwned::haveibeenpwned(
-          QString user
-        , QString password
-        ) {
-    this->user = user ;
+int haveibeenpwned::getCount() {
+    return this->count ;
+};
+
+haveibeenpwned::haveibeenpwned(QString password) {
     this->password = password ;
-    this->passwordHash = SHA1(password) ;
-    this->statusUser = false ;
-    this->statusPassword = false ;
+    this->passwordHash = SHA1(password).toLower() ;
+
+    this->checkPassword();
 };
 
-bool haveibeenpwned::checkUser() {
-    return true ;
+void haveibeenpwned::setCount(int count) {
+    this->count = count ;
 };
 
-bool haveibeenpwned::checkPassword() {
-    return true ;
+void haveibeenpwned::setStatus(bool value) {
+    this->status = value ;
 };
 
-void haveibeenpwned::setUser(QString user) {
-    this->user = user ;
-};
+void haveibeenpwned::checkPassword() {
+    // First 5 characters of hash:
+    QStringRef SHA1_5char(&this->passwordHash,0,5) ;
+    QString url = HIBPURL + SHA1_5char ;
+    try {
+        QStringList hashList = QString(sendRequest(url))
+                .toLower()
+                .split('\n');
 
-void haveibeenpwned::setPassword(QString password) {
-    this->password = password ;
-    this->passwordHash = SHA1(password) ;
-};
+        this->setCount(
+            searchHash(
+                  this->passwordHash
+                , hashList
+                )
+            ) ;
+        this->getCount()>0
+                ?this->setStatus(true)
+                :this->setStatus(false) ;
 
-QString haveibeenpwned::getUser() {
-    return this->user ;
-};
+    } catch (...) {
+        this->setCount(-1) ;
+        this->setStatus(false) ;
+    }
 
-QString haveibeenpwned::getPassword() {
-    return this->password ;
-};
-
-bool haveibeenpwned::getStatusUser() {
-    return this->statusUser ;
-};
-
-bool haveibeenpwned::getStatusPassword() {
-    return this->statusPassword ;
-};
-
-QByteArray haveibeenpwned::sendRequest(
-        QString url
-      , QString ApiKey
-        ) {
 
 };
+
+
 
 QString SHA1(QString password) {
     QCryptographicHash* hash = new QCryptographicHash(QCryptographicHash::Sha1) ;
-    hash->addData(password.toUtf8()) ;
+    hash->addData(password.toUtf8() ) ;
     return QString::fromUtf8(hash->result() ) ;
+};
+
+// hash is lowercase & hashList is like sha1:nr_of_apparitions
+int searchHash(QString hash, QStringList hashList) {
+    QString re_rule = hash + ":[0-9]+" ;
+    QRegularExpression re(re_rule) ;
+    return hashList.filter(re).count();
+};
+
+QByteArray sendRequest(QString url) {
+
 };

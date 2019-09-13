@@ -1,5 +1,5 @@
-#ifndef HIBPKEY
-#define HIBPKEY "api_key"
+#ifndef HIBPURL
+#define HIBPURL "https://api.pwnedpasswords.com/range/"
 #endif
 
 #ifndef HAVEIBEENPWNED_H
@@ -8,41 +8,29 @@
 #include <QString>
 #include <QtNetwork>
 #include <QCryptographicHash>
+#include <QRegularExpression>
 
 class haveibeenpwned
 {
 private:
-    QString user ;
     QString password ;
     QString passwordHash ;
-    bool statusUser ;
-    bool statusPassword ;
+    bool status ;
+    int count ;
+
+    void setStatus(bool value) ;
+    void setCount(int count) ;
 public:
-    haveibeenpwned() ;
-    haveibeenpwned(
-              QString user
-            , QString password
-            ) ;
-    bool checkUser() ;
-    bool checkPassword() ;
+    haveibeenpwned(QString password) ;
+    void checkPassword() ;
+    bool getStatus() ;
+    int getCount() ;
 
-    void setUser(QString user) ;
-    void setPassword(QString password) ;
-    void setPasswordHash(QString hash) ;
-
-    QString getUser() ;
-    QString getPassword() ;
-
-    bool getStatusUser() ;
-    bool getStatusPassword() ;
-
-    QByteArray sendRequest(
-              QString url
-            , QString ApiKey
-            ) ;
 };
 
 QString SHA1(QString password) ;
+QByteArray sendRequest(QString url) ;
+int searchHash(QString hash, QStringList hashList) ;
 
 
 #endif // HAVEIBEENPWNED_H
