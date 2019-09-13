@@ -63,5 +63,21 @@ int searchHash(QString hash, QStringList hashList) {
 };
 
 QByteArray sendRequest(QString url) {
+    QNetworkAccessManager* manager = new QNetworkAccessManager() ;
+    QNetworkRequest request;
+    QNetworkReply* reply = nullptr ;
 
+    QSslConfiguration config = QSslConfiguration::defaultConfiguration() ;
+    config.setProtocol(QSsl::TlsV1_3) ;
+    request.setSslConfiguration(config) ;
+    request.setUrl(QUrl(url) ) ;
+
+    reply = manager->get(request) ;
+
+    while(!reply->isFinished() ) {
+        ;
+    }
+    QByteArray result = reply->readAll() ;
+    reply->deleteLater() ;
+    return result ;
 };
