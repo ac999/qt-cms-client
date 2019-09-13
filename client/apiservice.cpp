@@ -1,5 +1,9 @@
 #include "apiservice.h"
 
+ServerRequest::~ServerRequest() {} ;
+
+QJsonObject* ServerRequest::exportJson() {return nullptr;} ;
+
 ServerRequest::ServerRequest() {
     this->user = "" ;
     this->token = "" ;
@@ -31,6 +35,8 @@ QString ServerRequest::getToken() {
     return this->token;
 };
 
+RegistrationRequest::~RegistrationRequest(){} ;
+
 RegistrationRequest::RegistrationRequest() {
     this->mail = "" ;
 };
@@ -55,6 +61,8 @@ QJsonObject* RegistrationRequest::exportJson() {
     return json;
 };
 
+LoginRequest::~LoginRequest(){} ;
+
 LoginRequest::LoginRequest() {
     this->password = "";
 };
@@ -78,6 +86,8 @@ QJsonObject* LoginRequest::exportJson() {
     json->insert("password", this->getPassword() );
     return json;
 };
+
+VerificationRequest::~VerificationRequest() {} ;
 
 VerificationRequest::VerificationRequest() {
     this->mail = "" ;
@@ -111,6 +121,8 @@ QJsonObject* VerificationRequest::exportJson() {
     json->insert("verification", this->getVerification() ) ;
     return json;
 };
+
+CompleteRegistrationRequest::~CompleteRegistrationRequest() {} ;
 
 CompleteRegistrationRequest::CompleteRegistrationRequest() {
     this->mail = "" ;

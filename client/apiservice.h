@@ -19,7 +19,7 @@ public:
     QString getUser() ;
     QString getToken() ;
 
-    virtual ~ServerRequest() = 0 ;
+    virtual ~ServerRequest() ;
     virtual QJsonObject* exportJson() ;
 };
 
