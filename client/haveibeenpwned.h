@@ -29,7 +29,9 @@ public:
 };
 
 QString SHA1(QString password) ;
+
 QByteArray sendRequest(QString url) ;
+
 int searchHash(QString hash, QStringList hashList) ;
 
 

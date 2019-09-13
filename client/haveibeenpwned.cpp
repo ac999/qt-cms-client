@@ -10,7 +10,7 @@ int haveibeenpwned::getCount() {
 
 haveibeenpwned::haveibeenpwned(QString password) {
     this->password = password ;
-    this->passwordHash = SHA1(password).toLower() ;
+    this->passwordHash = SHA1(password) ;
 
     this->checkPassword();
 };
@@ -29,7 +29,6 @@ void haveibeenpwned::checkPassword() {
     QString url = HIBPURL + SHA1_5char ;
     try {
         QStringList hashList = QString(sendRequest(url))
-                .toLower()
                 .split('\n');
 
         this->setCount(
@@ -46,19 +45,17 @@ void haveibeenpwned::checkPassword() {
         this->setCount(-1) ;
         this->setStatus(false) ;
     }
-
-
 };
 
 
-
+// SHA1 of parameter in uppercase
 QString SHA1(QString password) {
     QCryptographicHash* hash = new QCryptographicHash(QCryptographicHash::Sha1) ;
     hash->addData(password.toUtf8() ) ;
-    return QString::fromUtf8(hash->result() ) ;
+    return QString::fromUtf8(hash->result() ).toUpper() ;
 };
 
-// hash is lowercase & hashList is like sha1:nr_of_apparitions
+// hash is uppercase & hashList is of format "SHA1:nr_of_apparitions"
 int searchHash(QString hash, QStringList hashList) {
     QString re_rule = hash + ":[0-9]+" ;
     QRegularExpression re(re_rule) ;
