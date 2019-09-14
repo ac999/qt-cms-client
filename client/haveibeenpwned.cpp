@@ -1,4 +1,5 @@
 #include "haveibeenpwned.h"
+#include<QDebug>
 
 bool haveibeenpwned::getStatus() {
     return this->status ;
@@ -28,8 +29,8 @@ void haveibeenpwned::checkPassword() {
     QStringRef SHA1_5char(&this->passwordHash,0,5) ;
     QString url = HIBPURL + SHA1_5char ;
     try {
-        QStringList hashList = QString(sendRequest(url))
-                .split('\n');
+        QStringList hashList = QString(sendRequest(url) )
+                .split("\r\n");
 
         this->setCount(
             searchHash(
@@ -52,14 +53,19 @@ void haveibeenpwned::checkPassword() {
 QString SHA1(QString password) {
     QCryptographicHash* hash = new QCryptographicHash(QCryptographicHash::Sha1) ;
     hash->addData(password.toUtf8() ) ;
-    return QString::fromUtf8(hash->result() ).toUpper() ;
+    return QString::fromLatin1(hash->result().toHex()).toUpper() ;
 };
 
 // hash is uppercase & hashList is of format "SHA1:nr_of_apparitions"
 int searchHash(QString hash, QStringList hashList) {
-    QString re_rule = hash + ":[0-9]+" ;
-    QRegularExpression re(re_rule) ;
-    return hashList.filter(re).count();
+    QString re_rule = "^"+hash.mid(5,hash.length())+".+$" ;
+    QStringList filteredHashes=hashList.filter(QRegExp(re_rule));
+
+    if (!filteredHashes.count()) {
+        return 0;
+    }
+    return filteredHashes[0].split(':')[1].toInt();
+
 };
 
 QByteArray sendRequest(QString url) {
@@ -75,7 +81,7 @@ QByteArray sendRequest(QString url) {
     reply = manager->get(request) ;
 
     while(!reply->isFinished() ) {
-        ;
+        qApp->processEvents() ;
     }
     QByteArray result = reply->readAll() ;
     reply->deleteLater() ;
