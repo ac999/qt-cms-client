@@ -56,8 +56,8 @@ QString RegistrationRequest::getMail() {
 
 QJsonObject* RegistrationRequest::exportJson() {
     QJsonObject* json = new  QJsonObject() ;
-    json->insert("username", this->getUser() ) ;
     json->insert("email", this->getMail() ) ;
+    json->insert("username", this->getUser() ) ;
     return json;
 };
 
@@ -166,9 +166,28 @@ QString CompleteRegistrationRequest::getRpassword() {
 
 QJsonObject* CompleteRegistrationRequest::exportJson() {
     QJsonObject* json = new QJsonObject() ;
-    json->insert("username", this->getUser() ) ;
     json->insert("email", this->getMail() ) ;
+    json->insert("username", this->getUser() ) ;
     json->insert("password", this->getPassword() ) ;
     json->insert("token", this->getToken() ) ;
     return json;
+}
+
+ServerResponse::ServerResponse(){
+    this->status = "";
+    this->message = "";
+}
+
+QString ServerResponse::getStatus(){
+    return this->status;
+}
+
+QString ServerResponse::getMessage(){
+    return this->message;
+}
+
+void ServerResponse::getServerResponse(){
+
+
+
 }

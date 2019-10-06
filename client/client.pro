@@ -28,15 +28,18 @@ SOURCES += \
         apiservice.cpp \
         haveibeenpwned.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        useractionform.cpp
 
 HEADERS += \
         apiservice.h \
         haveibeenpwned.h \
-        mainwindow.h
+        mainwindow.h \
+        useractionform.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        useractionform.ui
 
 CONFIG += mobility
 MOBILITY = 

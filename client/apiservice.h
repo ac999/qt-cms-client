@@ -23,6 +23,17 @@ public:
     virtual QJsonObject* exportJson() ;
 };
 
+class ServerResponse {
+protected:
+    QString status;
+    QString message;
+public:
+    ServerResponse() ;
+    void getServerResponse() ;
+    QString getStatus();
+    QString getMessage();
+};
+
 class RegistrationRequest: public ServerRequest
 {
 private:
